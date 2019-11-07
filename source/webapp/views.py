@@ -8,6 +8,7 @@ class IndexView(ListView):
     template_name = 'index.html'
 
 
+
 class ProductView(DetailView):
     model = Product
     template_name = 'product/detail.html'
