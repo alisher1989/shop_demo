@@ -1,8 +1,8 @@
 def stats(request):
     session = request.session
     stats = session.get('stats', {})
-    times = stats.get('times', {})
-    visits = stats.get('visits', {})
+    times = stats.get('times', {}).copy()
+    visits = stats.get('visits', {}).copy()
     if 'total' in times:
         times_total = times.pop('total')
     else:
