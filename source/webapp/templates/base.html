@@ -40,6 +40,23 @@
 <div class="container mt-3 mb-3">
     {% include 'partial/messages.html' %}
     {% block content %}{% endblock %}
+
+    <hr>
+    <h1>Statistics:</h1>
+
+    <h3>You've visited:</h3>
+    {% for page, count in visits.items %}
+        <p>{{ page }}: {{ count }}</p>
+    {% endfor %}
+    <p>Total: {{ visits_total }} visits</p>
+
+    <h3>You've spend time:</h3>
+    {% for page, count in times.items %}
+        <p>{{ page }}: {{ count }} second</p>
+    {% endfor %}
+    <p>Total: {{ times_total }} seconds in site</p>
+
+
 </div>
 <script src="{% static 'js/jquery.min.js' %}"></script>
 <script src="{% static 'js/popper.min.js' %}"></script>
