@@ -156,5 +156,24 @@ class BasketView(StatisticsMixin, CreateView):
             self.request.session.pop('products_count')
 
 
+class OrderListView(ListView):
+    template_name = 'order/list.html'
+
+    def get_queryset(self):
+        if self.request.user.has_perm('webapp.view_order'):
+            return Order.objects.all().order_by('-created_at')
+        return self.request.user.orders.all()
+
+
+class OrderDetailView(DetailView):
+    template_name = 'order/detail.html'
+
+    def get_queryset(self):
+        if self.request.user.has_perm('webapp.view_order'):
+            return Order.objects.all()
+        return self.request.user.orders.all()
+
+
+
 
 
