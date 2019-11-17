@@ -1,5 +1,5 @@
 from django.http import HttpResponseRedirect
-from django.shortcuts import redirect
+from django.shortcuts import redirect, get_object_or_404
 from django.urls import reverse_lazy, reverse
 from django.views import View
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
@@ -83,7 +83,9 @@ class BasketChangeView(StatisticsMixin, View):
         next_url = request.GET.get('next', reverse('webapp:index'))
 
         if action == 'add':
-            products.append(pk)
+            product = get_object_or_404(Product, pk=pk)
+            if product.in_order:
+                products.append(pk)
         else:
             for product_pk in products:
                 if product_pk == pk:
