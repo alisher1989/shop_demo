@@ -18,7 +18,7 @@ def login_view(request, *args, **kwargs):
             login(request, user)
             if next_url:
                 return redirect(next_url)
-            return redirect('webapp:index')
+            return redirect('webapp:products_view')
         else:
             context['has_error'] = True
             context['next'] = next_url
@@ -30,7 +30,7 @@ def login_view(request, *args, **kwargs):
 
 def logout_view(request, *args, **kwargs):
     logout(request)
-    return redirect('webapp:index')
+    return redirect('webapp:products_view')
 
 
 def register_view(request, *args, **kwargs):
@@ -39,7 +39,7 @@ def register_view(request, *args, **kwargs):
         if form.is_valid():
             user = form.save()
             login(request, user)
-            return redirect('webapp:index')
+            return redirect('webapp:products_view')
     else:
         form = UserCreationForm()
     return render(request, 'user_create.html', context={'form': form})

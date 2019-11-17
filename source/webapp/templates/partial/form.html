@@ -6,7 +6,7 @@
 {% for field in form %}
     <div class="form-group">
         <label for="{{ field.id_for_label }}" class="mr-3">{{ field.label }}</label>
-        {% if field|field_type == 'imagefield' or field|field_type == 'filefield' %}
+        {% if field|field_type == 'imagefield' or field|field_type == 'filefield' or field|field_type == 'booleanfield' %}
             {{ field }}
         {% else %}
             {{ field|add_class:"form-control" }}

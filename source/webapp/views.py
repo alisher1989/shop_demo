@@ -1,18 +1,22 @@
+from django.http import HttpResponseRedirect
 from django.shortcuts import redirect
 from django.urls import reverse_lazy, reverse
 from django.views import View
-from django.views.generic import ListView, DetailView, CreateView, TemplateView
+from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 
 from webapp.models import Product, OrderProduct, Order
-from django.contrib.auth.mixins import PermissionRequiredMixin
+from django.contrib.auth.mixins import PermissionRequiredMixin, LoginRequiredMixin
 from django.contrib import messages
-from datetime import datetime, timedelta
+
 from webapp.mixins import StatisticsMixin
 
 
 class IndexView(StatisticsMixin, ListView):
     model = Product
     template_name = 'index.html'
+
+    def get_queryset(self):
+        return Product.objects.filter(in_order=True)
     #
     # def get(self, request, *args, **kwargs):
     #     messages.set_level(request, messages.DEBUG)
@@ -33,7 +37,7 @@ class ProductView(StatisticsMixin, DetailView):
 class ProductCreateView(PermissionRequiredMixin, StatisticsMixin, CreateView):
     model = Product
     template_name = 'product/create.html'
-    fields = ('name', 'category', 'price', 'photo')
+    fields = ('name', 'category', 'price', 'photo', 'in_order')
     success_url = reverse_lazy('webapp:index')
     permission_required = 'webapp.add_product'
     permission_denied_message = '403 Доступ запрещен'
@@ -44,6 +48,29 @@ class ProductCreateView(PermissionRequiredMixin, StatisticsMixin, CreateView):
     #     if request.user.has_perm('webapp.add_product'):
     #         return super().dispatch(request, *args, **kwargs)
     #     raise PermissionDenied('403 Permission denied')
+
+
+class ProductUpdateView(LoginRequiredMixin, StatisticsMixin, UpdateView):
+    model = Product
+    template_name = 'product/update.html'
+    fields = ('name', 'category', 'price', 'photo', 'in_order')
+    context_object_name = 'product'
+
+    def get_success_url(self):
+        return reverse('webapp:product_detail', kwargs={'pk': self.object.pk})
+
+
+class ProductDeleteView(LoginRequiredMixin, StatisticsMixin, DeleteView):
+    model = Product
+    template_name = 'product/delete.html'
+    success_url = reverse_lazy('webapp:index')
+    context_object_name = 'product'
+
+    def delete(self, request, *args, **kwargs):
+        product = self.object = self.get_object()
+        product.in_order = False
+        product.save()
+        return HttpResponseRedirect(self.get_success_url())
 
 
 class BasketChangeView(StatisticsMixin, View):
