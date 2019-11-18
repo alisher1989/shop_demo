@@ -3,10 +3,11 @@
   "model": "webapp.product",
   "pk": 1,
   "fields": {
-    "name": "\u042f\u0431\u043b\u043e\u043a\u0438",
+    "name": "\u042f\u0431\u043b\u043e\u043a\u0438(Jannat)",
     "category": "food",
     "photo": "product_images/2374-ed4_wide.jpg",
-    "price": "50.00"
+    "price": "50.00",
+    "in_order": true
   }
 },
 {
@@ -16,7 +17,8 @@
     "name": "\u0413\u0440\u0443\u0448\u0438",
     "category": "food",
     "photo": "product_images/grusha.jpg",
-    "price": "40.00"
+    "price": "40.00",
+    "in_order": true
   }
 },
 {
@@ -26,7 +28,8 @@
     "name": "\u0414\u0436\u0438\u043d\u0441\u044b \u0436\u0435\u043d\u0441\u043a\u0438\u0435",
     "category": "clothes",
     "photo": "product_images/01_1526.jpg",
-    "price": "2000.00"
+    "price": "2000.00",
+    "in_order": true
   }
 },
 {
@@ -36,7 +39,8 @@
     "name": "\u0421\u0440\u0435\u0434\u0441\u0442\u0432\u043e \u0434\u043b\u044f \u043c\u044b\u0442\u044c\u044f \u043f\u043e\u0441\u0443\u0434\u044b",
     "category": "household",
     "photo": "product_images/14306911.jpeg",
-    "price": "180.00"
+    "price": "180.00",
+    "in_order": true
   }
 },
 {
@@ -46,7 +50,8 @@
     "name": "\u041e\u0431\u044b\u0447\u043d\u044b\u0439 \u043f\u043e\u0440\u043e\u0448\u043e\u043a",
     "category": "household",
     "photo": "product_images/239.750.jpg",
-    "price": "100.00"
+    "price": "100.00",
+    "in_order": true
   }
 },
 {
@@ -56,7 +61,167 @@
     "name": "\u0428\u0430\u0440\u0438\u043a\u0438 \u0441 \u0433\u0435\u043b\u0438\u0435\u043c",
     "category": "other",
     "photo": "product_images/Pa2E3TtXqHKCUDAumY.jpg",
-    "price": "70.00"
+    "price": "70.00",
+    "in_order": true
+  }
+},
+{
+  "model": "webapp.product",
+  "pk": 7,
+  "fields": {
+    "name": "Ball",
+    "category": "other",
+    "photo": "product_images/1407858226.png",
+    "price": "1000.00",
+    "in_order": false
+  }
+},
+{
+  "model": "webapp.orderproduct",
+  "pk": 1,
+  "fields": {
+    "order": 1,
+    "product": 2,
+    "amount": "1.00"
+  }
+},
+{
+  "model": "webapp.orderproduct",
+  "pk": 2,
+  "fields": {
+    "order": 1,
+    "product": 3,
+    "amount": "1.00"
+  }
+},
+{
+  "model": "webapp.orderproduct",
+  "pk": 3,
+  "fields": {
+    "order": 1,
+    "product": 4,
+    "amount": "1.00"
+  }
+},
+{
+  "model": "webapp.orderproduct",
+  "pk": 4,
+  "fields": {
+    "order": 2,
+    "product": 1,
+    "amount": "1.00"
+  }
+},
+{
+  "model": "webapp.orderproduct",
+  "pk": 5,
+  "fields": {
+    "order": 2,
+    "product": 2,
+    "amount": "1.00"
+  }
+},
+{
+  "model": "webapp.orderproduct",
+  "pk": 6,
+  "fields": {
+    "order": 2,
+    "product": 4,
+    "amount": "1.00"
+  }
+},
+{
+  "model": "webapp.orderproduct",
+  "pk": 11,
+  "fields": {
+    "order": 5,
+    "product": 5,
+    "amount": "4.00"
+  }
+},
+{
+  "model": "webapp.orderproduct",
+  "pk": 12,
+  "fields": {
+    "order": 5,
+    "product": 5,
+    "amount": "66.00"
+  }
+},
+{
+  "model": "webapp.orderproduct",
+  "pk": 13,
+  "fields": {
+    "order": 4,
+    "product": 4,
+    "amount": "4.00"
+  }
+},
+{
+  "model": "auth.group",
+  "pk": 1,
+  "fields": {
+    "name": "\u041c\u0435\u043d\u0435\u0434\u0436\u0435\u0440\u044b",
+    "permissions": [
+      [
+        "add_product",
+        "webapp",
+        "product"
+      ],
+      [
+        "change_product",
+        "webapp",
+        "product"
+      ],
+      [
+        "delete_product",
+        "webapp",
+        "product"
+      ]
+    ]
+  }
+},
+{
+  "model": "auth.group",
+  "pk": 2,
+  "fields": {
+    "name": "\u041e\u043f\u0435\u0440\u0430\u0442\u043e\u0440\u044b",
+    "permissions": [
+      [
+        "add_order",
+        "webapp",
+        "order"
+      ],
+      [
+        "change_order",
+        "webapp",
+        "order"
+      ],
+      [
+        "delete_order",
+        "webapp",
+        "order"
+      ],
+      [
+        "view_order",
+        "webapp",
+        "order"
+      ]
+    ]
+  }
+},
+{
+  "model": "auth.group",
+  "pk": 3,
+  "fields": {
+    "name": "\u041a\u0443\u0440\u044c\u0435\u0440\u044b",
+    "permissions": [
+      [
+        "view_order",
+        "webapp",
+        "order"
+      ]
+    ]
   }
 },
 {
@@ -64,7 +229,7 @@
   "pk": 1,
   "fields": {
     "password": "pbkdf2_sha256$120000$EDfng6jA7vnt$0YiYg2OIeoi4EUuuY6IXinmEgRQTSbGn9vWw7lTbK+M=",
-    "last_login": "2019-09-03T11:07:08.594Z",
+    "last_login": "2019-11-18T16:38:55.637Z",
     "is_superuser": true,
     "username": "admin",
     "first_name": "\u0410\u0434\u043c\u0438\u043d",
@@ -72,20 +237,145 @@
     "email": "",
     "is_staff": true,
     "is_active": true,
-    "date_joined": "2019-09-03T06:46:57.824Z",
-    "groups": [],
+    "date_joined": "2019-09-03T06:46:57Z",
+    "groups": [
+      [
+        "\u041c\u0435\u043d\u0435\u0434\u0436\u0435\u0440\u044b"
+      ]
+    ],
     "user_permissions": []
   }
 },
 {
-  "model": "accounts.profile",
+  "model": "auth.user",
+  "pk": 2,
+  "fields": {
+    "password": "pbkdf2_sha256$120000$yYIq2wSLfxtz$aMOsfVCgOBBPgJrPOgKiXWy2aWV32cWKzzhKrc+caLs=",
+    "last_login": "2019-11-18T16:25:38.333Z",
+    "is_superuser": false,
+    "username": "user",
+    "first_name": "Sadyrbek",
+    "last_name": "Kadyrbek",
+    "email": "kada@test.com",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2019-11-12T10:45:51Z",
+    "groups": [
+      [
+        "\u041e\u043f\u0435\u0440\u0430\u0442\u043e\u0440\u044b"
+      ]
+    ],
+    "user_permissions": []
+  }
+},
+{
+  "model": "auth.user",
+  "pk": 3,
+  "fields": {
+    "password": "pbkdf2_sha256$120000$1ERQ93T0Pk3i$WCqD5VsNK/BAUoBWX0Ql+9M+hKYVr/UJgU0q8UeSZHw=",
+    "last_login": "2019-11-18T16:26:30.140Z",
+    "is_superuser": false,
+    "username": "user2",
+    "first_name": "Zarperi",
+    "last_name": "Kada",
+    "email": "zar@test.com",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2019-11-12T11:01:57Z",
+    "groups": [
+      [
+        "\u041a\u0443\u0440\u044c\u0435\u0440\u044b"
+      ]
+    ],
+    "user_permissions": []
+  }
+},
+{
+  "model": "webapp.order",
   "pk": 1,
   "fields": {
+    "user": null,
+    "first_name": "Alisher",
+    "last_name": "Rashidovich",
+    "email": "test@test.com",
+    "phone": "+123456789",
+    "status": "canceled",
+    "created_at": "2019-11-07T19:04:38.835Z",
+    "updated_at": "2019-11-18T16:49:10.580Z"
+  }
+},
+{
+  "model": "webapp.order",
+  "pk": 2,
+  "fields": {
+    "user": null,
+    "first_name": "Test",
+    "last_name": "Test",
+    "email": "tetsi@test.com",
+    "phone": "54908544",
+    "status": "new",
+    "created_at": "2019-11-12T14:14:12.066Z",
+    "updated_at": "2019-11-12T14:14:12.066Z"
+  }
+},
+{
+  "model": "webapp.order",
+  "pk": 3,
+  "fields": {
     "user": [
-      "admin"
+      "user"
     ],
-    "birth_date": null,
-    "avatar": "user_pics/1566399253171599268.jpg"
+    "first_name": "test",
+    "last_name": "test",
+    "email": "test_@test.com",
+    "phone": "+123456789",
+    "status": "delivered",
+    "created_at": "2019-11-18T12:28:44.220Z",
+    "updated_at": "2019-11-18T16:47:41.957Z"
+  }
+},
+{
+  "model": "webapp.order",
+  "pk": 4,
+  "fields": {
+    "user": [
+      "user"
+    ],
+    "first_name": "test 2.0",
+    "last_name": "test 2.0",
+    "email": "test@test.com",
+    "phone": "5489879",
+    "status": "delivered",
+    "created_at": "2019-11-18T12:43:43.038Z",
+    "updated_at": "2019-11-18T16:47:03.540Z"
+  }
+},
+{
+  "model": "webapp.order",
+  "pk": 5,
+  "fields": {
+    "user": null,
+    "first_name": "test",
+    "last_name": "test",
+    "email": "test_@test.com",
+    "phone": "+123456789",
+    "status": "delivered",
+    "created_at": "2019-11-18T12:45:39.503Z",
+    "updated_at": "2019-11-18T16:43:56.950Z"
+  }
+},
+{
+  "model": "webapp.order",
+  "pk": 6,
+  "fields": {
+    "user": null,
+    "first_name": "test",
+    "last_name": "test---3",
+    "email": "test_@test.com",
+    "phone": "+123456789",
+    "status": "new",
+    "created_at": "2019-11-18T12:49:10.502Z",
+    "updated_at": "2019-11-18T13:07:35.722Z"
   }
 }
 ]
