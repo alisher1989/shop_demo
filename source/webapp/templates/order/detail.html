@@ -15,7 +15,7 @@
                     {% csrf_token %}
                     <button class="btn btn-danger" type="submit">Delete</button>
                     {% if perms.webapp.add_order %}
-                       <a href="{% url "webapp:order_order_create" order.pk %}" class="btn btn-primary">Редактировать</a>
+                       <a href="{% url "webapp:product_update_in_order" product_in_order.pk %}">Редактировать</a>
                     {% endif %}
                 </form></h4>
              <span class="float-right">

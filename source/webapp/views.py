@@ -248,11 +248,15 @@ class OrderProductUpdateView(PermissionRequiredMixin, UpdateView):
     permission_denied_message = '403 Доступ запрещен'
 
     def get_initial(self):
+        print(self.kwargs)
         initial = super().get_initial()
-        self.project = get_object_or_404(Order, pk=self.kwargs['pk'])
-        initial['product'] = self.project.orderproduct_set.filter(order__orderproduct__in=self.project)
-        initial['amount'] = self.project.orderproduct_set
         return initial
+
+    def get(self, request, *args, **kwargs):
+        print('here')
+        print(self.kwargs)
+        print(kwargs)
+        return super().get(request, *args, **kwargs)
 
     def get_success_url(self):
         return reverse('webapp:order_detail', kwargs={'pk': self.object.order.pk})
