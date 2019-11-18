@@ -4,6 +4,7 @@ from django.urls import reverse_lazy, reverse
 from django.views import View
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 
+from webapp.forms import ManualOrderForm, OrderProductForm
 from webapp.models import Product, OrderProduct, Order
 from django.contrib.auth.mixins import PermissionRequiredMixin, LoginRequiredMixin
 from django.contrib import messages
@@ -50,21 +51,25 @@ class ProductCreateView(PermissionRequiredMixin, StatisticsMixin, CreateView):
     #     raise PermissionDenied('403 Permission denied')
 
 
-class ProductUpdateView(LoginRequiredMixin, StatisticsMixin, UpdateView):
+class ProductUpdateView(PermissionRequiredMixin, StatisticsMixin, UpdateView):
     model = Product
     template_name = 'product/update.html'
     fields = ('name', 'category', 'price', 'photo', 'in_order')
     context_object_name = 'product'
+    permission_required = 'webapp.change_product'
+    permission_denied_message = '403 Доступ запрещен'
 
     def get_success_url(self):
         return reverse('webapp:product_detail', kwargs={'pk': self.object.pk})
 
 
-class ProductDeleteView(LoginRequiredMixin, StatisticsMixin, DeleteView):
+class ProductDeleteView(PermissionRequiredMixin, LoginRequiredMixin, StatisticsMixin, DeleteView):
     model = Product
     template_name = 'product/delete.html'
     success_url = reverse_lazy('webapp:index')
     context_object_name = 'product'
+    permission_required = 'webapp.delete_product'
+    permission_denied_message = '403 Доступ запрещен'
 
     def delete(self, request, *args, **kwargs):
         product = self.object = self.get_object()
@@ -165,14 +170,108 @@ class OrderListView(ListView):
         return self.request.user.orders.all()
 
 
-class OrderDetailView(DetailView):
+class OrderDetailView(PermissionRequiredMixin, DetailView):
     template_name = 'order/detail.html'
+    permission_required = 'webapp.view_order'
+    permission_denied_message = '403 Доступ запрещен'
 
     def get_queryset(self):
         if self.request.user.has_perm('webapp.view_order'):
             return Order.objects.all()
         return self.request.user.orders.all()
 
+
+class OrderCreateView(PermissionRequiredMixin, CreateView):
+    model = Order
+    template_name = 'order/create.html'
+    form_class = ManualOrderForm
+    success_url = reverse_lazy('webapp:index')
+    permission_required = 'webapp.add_order'
+    permission_denied_message = '403 Доступ запрещен'
+
+
+class OrderUpdateView(PermissionRequiredMixin, UpdateView):
+    model = Order
+    template_name = 'order/update.html'
+    form_class = ManualOrderForm
+    context_object_name = 'order'
+    permission_required = 'webapp.change_order'
+    permission_denied_message = '403 Доступ запрещен'
+
+    def get_success_url(self):
+        return reverse('webapp:order_detail', kwargs={'pk': self.object.pk})
+
+
+class OrderDeliverView(View):
+    def get(self, request, *args, **kwargs):
+        order = get_object_or_404(Order, pk=self.kwargs['pk'])
+        order.status = 'delivered'
+        order.save()
+        return redirect(reverse('webapp:order_detail', kwargs={'pk': order.pk}))
+
+
+class OrderCancelView(View):
+    def get(self, request, *args, **kwargs):
+        order = get_object_or_404(Order, pk=self.kwargs['pk'])
+        order.status = 'canceled'
+        order.save()
+        return redirect(reverse('webapp:order_detail', kwargs={'pk': order.pk}))
+
+
+class OrderProductCreateView(PermissionRequiredMixin, CreateView):
+    model = OrderProduct
+    form_class = OrderProductForm
+    template_name = 'order_product/create.html'
+    permission_required = 'webapp.add_orderproduct'
+    permission_denied_message = '403 Доступ запрещен'
+
+    def form_valid(self, form):
+        order = get_object_or_404(Order, pk=self.kwargs['pk'])
+        name_of_product = form.cleaned_data.get('product')
+        amount_of_product = form.cleaned_data.get('amount')
+        self.object = form.save(commit=False)
+        self.object.order = order
+        self.object.product = name_of_product
+        self.object.amount = amount_of_product
+        self.object.save()
+        return HttpResponseRedirect(self.get_success_url())
+
+    def get_success_url(self):
+        return reverse('webapp:order_detail', kwargs={'pk': self.object.order.pk})
+
+
+class OrderProductUpdateView(PermissionRequiredMixin, UpdateView):
+    model = OrderProduct
+    form_class = OrderProductForm
+    template_name = 'order_product/update.html'
+    permission_required = 'webapp.change_orderproduct'
+    permission_denied_message = '403 Доступ запрещен'
+
+    def get_initial(self):
+        initial = super().get_initial()
+        self.project = get_object_or_404(Order, pk=self.kwargs['pk'])
+        initial['product'] = self.project.orderproduct_set.filter(order__orderproduct__in=self.project)
+        initial['amount'] = self.project.orderproduct_set
+        return initial
+
+    def get_success_url(self):
+        return reverse('webapp:order_detail', kwargs={'pk': self.object.order.pk})
+
+
+class OrderProductDeleteView(PermissionRequiredMixin, DeleteView):
+    model = OrderProduct
+    context_object_name = 'order_product'
+    pk_kwargs_url = 'pk'
+    permission_required = 'webapp.delete_orderproduct'
+    permission_denied_message = '403 Доступ запрещен'
+
+    def delete(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        self.object.delete()
+        return redirect(reverse('webapp:order_detail', kwargs={'pk': self.object.order.pk}))
+
+    # def get_queryset(self):
+    #     return Product.objects.filter(in_order=True)
 
 
 

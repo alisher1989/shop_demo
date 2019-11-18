@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% block title %}Заказы{% endblock %}
+{% block menu %}
+{#    {% if perms.webapp.add_product %}#}
+{#        <li class="nav-item"><a href="{% url 'webapp:product_create' %}" class="nav-link">Добавить товар</a></li>#}
+{#    {% endif %}#}
+{% endblock %}
+{% block content %}
+    <h1 class="text-center">Заказы</h1>
+    <div class="row">
+        {% for order in object_list %}
+            <div class="col col-3">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ order.first_name }}</h5>
+                        <p class="card-text">{{ order.email }} | {{ order.status }} </p>
+                        <a href="{% url "webapp:order_detail" order.pk %}"
+                           class="btn btn-primary">Посмотреть</a>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}
