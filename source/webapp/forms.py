@@ -1,7 +1,8 @@
 from django.core.exceptions import ValidationError
 from django.forms import ModelForm
+from django import forms
 
-from webapp.models import Order, OrderProduct
+from webapp.models import Order, OrderProduct, Product
 
 
 class BasketOrderCreateForm(ModelForm):
@@ -33,17 +34,26 @@ class BasketOrderCreateForm(ModelForm):
 
 
 class ManualOrderForm(ModelForm):
+    def __init__(self, user=None, **kwargs):
+        self.user = user
+        if user and not user.is_authenticated:
+            self.user = None
+        super().__init__(**kwargs)
+
     def clean_first_name(self):
         if not self.user and not self.cleaned_data.get('first_name'):
             raise ValidationError('Вы должны указать пользователя либо его имя!')
+        return self.cleaned_data.get('first_name')
 
     def clean_email(self):
         if not self.user and not self.cleaned_data.get('email'):
             raise ValidationError('Вы должны указать пользователя либо его email!')
+        return self.cleaned_data.get('email')
 
     def clean_phone(self):
         if not self.user and not self.cleaned_data.get('phone'):
             raise ValidationError('Вы должны указать пользователя либо его телефон!')
+        return self.cleaned_data.get('phone')
 
     class Meta:
         model = Order
@@ -54,3 +64,5 @@ class OrderProductForm(ModelForm):
     class Meta:
         model = OrderProduct
         fields = ['product', 'amount']
+
+
